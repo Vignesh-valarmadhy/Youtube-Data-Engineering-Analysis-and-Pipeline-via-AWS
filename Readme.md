@@ -7,7 +7,6 @@ This project is focused on securely managing, processing, and analyzing large vo
 ### **Project Goals**
 #### **1. Data Ingestion**
 Develop a robust mechanism to ingest data from multiple sources:
-- Use APIs (e.g., YouTube Data API) to fetch data directly from YouTube.
 - Import CSV and JSON files provided in the Kaggle dataset.
 - Design workflows to automatically update the data periodically.
 
