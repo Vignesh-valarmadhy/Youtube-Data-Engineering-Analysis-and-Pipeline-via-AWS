@@ -1,0 +1,25 @@
+#
+	
+Column name
+	
+Data type
+	
+Partition key
+	
+Comment
+
+1
+kind
+string
+-
+-
+2
+etag
+string
+-
+-
+3
+items
+array
+-
+-

@@ -1,0 +1,143 @@
+{
+	"jobConfig": {
+		"name": "de-on-youtube-parquet-analystics",
+		"description": "",
+		"role": "arn:aws:iam::825765421264:role/de-on-youtube-glue-s3-role",
+		"command": "glueetl",
+		"version": "5.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"jobRunQueuingEnabled": false,
+		"maxRetries": 0,
+		"timeout": 480,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "de-on-youtube-par.py",
+		"scriptLocation": "s3://aws-glue-assets-825765421264-us-east-1/scripts/",
+		"language": "python-3",
+		"spark": true,
+		"sparkConfiguration": "standard",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2025-01-11T21:57:49.268Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-glue-assets-825765421264-us-east-1/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"observabilityMetrics": true,
+		"bookmark": "job-bookmark-disable",
+		"sparkPath": "s3://aws-glue-assets-825765421264-us-east-1/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null,
+		"maintenanceWindow": null
+	},
+	"dag": {
+		"node-1736632675996": {
+			"nodeId": "node-1736632675996",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1736632613900",
+				"node-1736632612485"
+			],
+			"name": "Join",
+			"generatedNodeName": "Join_node1736632675996",
+			"classification": "Transform",
+			"type": "Join",
+			"joinType": "equijoin",
+			"columns": [
+				{
+					"from": "node-1736632613900",
+					"keys": [
+						"category_id"
+					]
+				},
+				{
+					"from": "node-1736632612485",
+					"keys": [
+						"id"
+					]
+				}
+			],
+			"columnConditions": [
+				"="
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1736632820588": {
+			"nodeId": "node-1736632820588",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1736632675996"
+			],
+			"name": "Amazon S3",
+			"generatedNodeName": "AmazonS3_node1736632820588",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://de-on-youtube-analytics-us-east-1-dev-vignesh",
+			"partitionKeys": [
+				"region",
+				"category_id"
+			],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "db_youtube_analytics",
+				"table": "final_analytics"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"autoDataQuality": {
+				"isEnabled": true,
+				"evaluationContext": "EvaluateDataQuality_node1736632315956"
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1736632612485": {
+			"nodeId": "node-1736632612485",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "AWS Glue Data Catalog",
+			"generatedNodeName": "AWSGlueDataCatalog_node1736632612485",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "db_youtube_cleaned",
+			"table": "cleaned_statistics_reference_data",
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		},
+		"node-1736632613900": {
+			"nodeId": "node-1736632613900",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "AWS Glue Data Catalog",
+			"generatedNodeName": "AWSGlueDataCatalog_node1736632613900",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "de_youtube_raw",
+			"table": "raw_statistics",
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"usageProfileName": null
+}
